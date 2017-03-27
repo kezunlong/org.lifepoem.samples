@@ -16,7 +16,7 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
 public class DOM4JDemo {
-	
+
 	private static final String DEMO_FILE = "xmlfiles" + File.separator + "dom4j_demo.xml";
 
 	public static void main(String[] args) {
@@ -30,40 +30,39 @@ public class DOM4JDemo {
 		Document doc = null;
 		try {
 			doc = reader.read(file);
-		}
-		catch(DocumentException e) {
+		} catch (DocumentException e) {
 			e.printStackTrace();
 		}
 
-	    // iterate through child elements of root
+		// iterate through child elements of root
 		Element root = doc.getRootElement();
 		Iterator iter = root.elementIterator();
-	    while (iter.hasNext()) {
-	        Element contact = (Element)iter.next();
-	        printContact(contact);
-	    }
-	    
-	    // Navigation with XPath
-	    // 在使用XPath时，需要导入Jaxen， Jaxen is a universal Java XPath engine. 
-	    List list = doc.selectNodes("//addresslist/contact");
-	    for(int i = 0; i < list.size(); i++) {
-	    	Element contact = (Element)list.get(i);
-	    	printContact(contact);
-	    }
-	    
-	    // 针对示例文档，下面三行语句等价
-	    Node node1 = doc.selectSingleNode( "//addresslist/contact/name" );
-	    Node node2 = doc.selectSingleNode( "//contact/name" );
-	    Node node3 = doc.selectSingleNode( "//name" );
-	    System.out.println("Id1: " + node1.valueOf("@id"));
-	    System.out.println("Id2: " + node2.valueOf("@id"));
-	    System.out.println("Id3: " + node3.valueOf("@id"));
+		while (iter.hasNext()) {
+			Element contact = (Element) iter.next();
+			printContact(contact);
+		}
+
+		// Navigation with XPath
+		// 在使用XPath时，需要导入Jaxen， Jaxen is a universal Java XPath engine.
+		List list = doc.selectNodes("//addresslist/contact");
+		for (int i = 0; i < list.size(); i++) {
+			Element contact = (Element) list.get(i);
+			printContact(contact);
+		}
+
+		// 针对示例文档，下面三行语句等价
+		Node node1 = doc.selectSingleNode("//addresslist/contact/name");
+		Node node2 = doc.selectSingleNode("//contact/name");
+		Node node3 = doc.selectSingleNode("//name");
+		System.out.println("Id1: " + node1.valueOf("@id"));
+		System.out.println("Id2: " + node2.valueOf("@id"));
+		System.out.println("Id3: " + node3.valueOf("@id"));
 	}
-	
+
 	private static void printContact(Element contact) {
 		System.out.println("Name: " + contact.elementText("name"));
-        System.out.println("Id: " + contact.element("name").attributeValue("id"));
-        System.out.println("Email: " + contact.elementText("email"));
+		System.out.println("Id: " + contact.element("name").attributeValue("id"));
+		System.out.println("Email: " + contact.elementText("email"));
 	}
 
 	private static void writeXMLByDOM4J() {
@@ -74,7 +73,7 @@ public class DOM4JDemo {
 		Element email = contact.addElement("email");
 		name.setText("柯尊龙");
 		email.setText("lifepoem@163.com");
-		
+
 		// createPrettyPrint将会创建自动缩进和换行的格式化XML文件
 		OutputFormat format = OutputFormat.createPrettyPrint();
 		format.setEncoding("UTF-8");
@@ -82,8 +81,7 @@ public class DOM4JDemo {
 			XMLWriter writer = new XMLWriter(new FileOutputStream(new File(DEMO_FILE)), format);
 			writer.write(doc);
 			writer.close();
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
