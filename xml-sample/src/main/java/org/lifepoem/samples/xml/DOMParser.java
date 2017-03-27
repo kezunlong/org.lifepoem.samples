@@ -22,7 +22,7 @@ import org.xml.sax.SAXException;
 public class DOMParser {
 
 	public static void main(String[] args) {
-		writeXMLByDOM();
+		readXMLByDOM();
 	}
 
 	private static void readXMLByDOM() {
@@ -40,7 +40,7 @@ public class DOMParser {
 		//3.定义Document接口对象，通过DocumentBuilder类进行DOM树的转换
 		Document doc = null;
 		//String file = "D:" + File.separator + "dom_demo_01.xml";
-		String file = "dom_demo_01.xml"; 
+		String file = "xmlfiles"+ File.separator + "dom_demo_01.xml"; 
 		try {
 			doc = builder.parse(file);
 		}
@@ -109,7 +109,7 @@ public class DOMParser {
 		}
 		t.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(new File("dom_demo_02.xml"));
+		StreamResult result = new StreamResult(new File("xmlfiles"+ File.separator + "dom_demo_02.xml"));
 		try {
 			t.transform(source, result);
 		}

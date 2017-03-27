@@ -1,5 +1,7 @@
 package org.lifepoem.samples.xml;
 
+import java.io.File;
+
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -11,7 +13,7 @@ public class SAXParserDemo {
 		//2. 建立解析器
 		SAXParser parser = factory.newSAXParser();
 		//3. 使用自定义Handler解析XML文档
-		parser.parse("sax_demo_01.xml", new MySAXHandler());
+		parser.parse("xmlfiles"+ File.separator + "sax_demo_01.xml", new MySAXHandler());
 	}
 
 }
