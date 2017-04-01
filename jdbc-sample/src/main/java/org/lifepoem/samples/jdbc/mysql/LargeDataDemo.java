@@ -15,6 +15,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.lifepoem.samples.jdbc.JDBCUtils;
+
 /**
  * 
  * 大数据处理指的是对CLOB和BLOB类型数据的操作
@@ -41,7 +43,7 @@ public class LargeDataDemo {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtils.getMySQLConnection();
 			String sql = "INSERT INTO testclob(name, resume) values(?,?)";
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, "ke");
@@ -63,7 +65,7 @@ public class LargeDataDemo {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtils.getMySQLConnection();
 			String sql = "SELECT * FROM testclob";
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
@@ -96,7 +98,7 @@ public class LargeDataDemo {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtils.getMySQLConnection();
 			String sql = "INSERT INTO testblob(name, img) values(?,?)";
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, "ke");
@@ -118,7 +120,7 @@ public class LargeDataDemo {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			conn = JDBCUtils.getConnection();
+			conn = JDBCUtils.getMySQLConnection();
 			String sql = "SELECT * FROM testblob";
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();

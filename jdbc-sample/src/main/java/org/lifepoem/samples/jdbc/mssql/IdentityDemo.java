@@ -1,4 +1,4 @@
-package org.lifepoem.samples.jdbc.mysql;
+package org.lifepoem.samples.jdbc.mssql;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,30 +9,31 @@ import java.util.Random;
 import org.lifepoem.samples.jdbc.JDBCUtils;
 
 /**
- * MySQL中获取自动增长的字段值有如下3种方式： 
+ * 
+ * MSSQL中获取自动增长的字段值有如下3种方式： 
  * 1。getGeneratedKeys 
- * 2。SELECT LAST_INSERT_ID()
+ * 2。SELECT SCOPE_IDENTITY()
  * 3.Updatable ResultSet
  * 
- * @author irfgoy
+ * @author Vincent Ke
  *
  */
-public class AutoIncrementDemo {
+public class IdentityDemo {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		autoIncKeyFromGetGeneratedKeys();
-		autoIncKeyFromLastInsertId();
-		autoIncKeyFromRS();
+		identityFromGetGeneratedKeys();
+		identityFromScopeIdentity();
+		identityFromRS();
 	}
 
-	private static void autoIncKeyFromGetGeneratedKeys() throws ClassNotFoundException, SQLException {
+	private static void identityFromGetGeneratedKeys() throws ClassNotFoundException, SQLException {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 
 		try {
 
-			conn = JDBCUtils.getMySQLConnection();
+			conn = JDBCUtils.getMSSQLConnection();
 			stmt = conn.createStatement();
 
 			String sql = "INSERT INTO users(name) VALUES('newuser-" + new Random().nextInt() + "')";
@@ -63,14 +64,14 @@ public class AutoIncrementDemo {
 		}
 	}
 
-	private static void autoIncKeyFromLastInsertId() throws ClassNotFoundException, SQLException {
+	private static void identityFromScopeIdentity() throws ClassNotFoundException, SQLException {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 
 		try {
 
-			conn = JDBCUtils.getMySQLConnection();
+			conn = JDBCUtils.getMSSQLConnection();
 			stmt = conn.createStatement();
 
 			String sql = "INSERT INTO users(name) VALUES('newuser-" + new Random().nextInt() + "')";
@@ -80,7 +81,7 @@ public class AutoIncrementDemo {
 			stmt.executeUpdate(sql);
 
 			int autoIncKeyFromFunc = -1;
-			rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
+			rs = stmt.executeQuery("SELECT SCOPE_IDENTITY()");
 
 			if (rs.next()) {
 				autoIncKeyFromFunc = rs.getInt(1);
@@ -88,21 +89,21 @@ public class AutoIncrementDemo {
 				// throw an exception from here
 			}
 
-			System.out.println("Key returned from " + "'SELECT LAST_INSERT_ID()': " + autoIncKeyFromFunc);
+			System.out.println("Key returned from " + "'SELECT SCOPE_IDENTITY()': " + autoIncKeyFromFunc);
 		} finally {
 			JDBCUtils.release(rs, stmt, conn);
 		}
 	}
 
-	private static void autoIncKeyFromRS() throws ClassNotFoundException, SQLException {
+	private static void identityFromRS() throws ClassNotFoundException, SQLException {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 
 		try {
 
-			conn = JDBCUtils.getMySQLConnection();
-			stmt = conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.CONCUR_UPDATABLE);
+			conn = JDBCUtils.getMSSQLConnection();
+			stmt = conn.createStatement(java.sql.ResultSet.TYPE_SCROLL_SENSITIVE, java.sql.ResultSet.CONCUR_UPDATABLE);
 
 			rs = stmt.executeQuery("SELECT * FROM users");
 
@@ -123,4 +124,5 @@ public class AutoIncrementDemo {
 			JDBCUtils.release(rs, stmt, conn);
 		}
 	}
+
 }

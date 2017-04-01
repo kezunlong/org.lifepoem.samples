@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 
+import org.lifepoem.samples.jdbc.JDBCUtils;
+
 /**
  * Demos for Statement, PreparedStatement, CallableStatement
  * 
@@ -31,11 +33,7 @@ public class StatementsDemo {
 		ResultSet rs = null;
 
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/lms?useSSL=false";
-			String username = "root";
-			String password = "123456";
-			conn = DriverManager.getConnection(url, username, password);
+			conn = JDBCUtils.getMySQLConnection();
 
 			stmt = conn.createStatement();
 			String sql = "SELECT * FROM users";
@@ -47,28 +45,7 @@ public class StatementsDemo {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			// 回收数据库资源
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			JDBCUtils.release(rs, stmt, conn);
 		}
 	}
 
@@ -80,11 +57,7 @@ public class StatementsDemo {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/lms?useSSL=false";
-			String username = "root";
-			String password = "123456";
-			conn = DriverManager.getConnection(url, username, password);
+			conn = JDBCUtils.getMySQLConnection();
 
 			String sql = "INSERT INTO users(name, password, email, birthday) VALUES(?, ?, ?, ?)";
 			stmt = conn.prepareStatement(sql);
@@ -98,20 +71,7 @@ public class StatementsDemo {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			JDBCUtils.release(stmt, conn);
 		}
 	}
 
@@ -127,11 +87,7 @@ public class StatementsDemo {
 		Connection conn = null;
 		CallableStatement stmt = null;
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/lms?useSSL=false";
-			String username = "root";
-			String password = "123456";
-			conn = DriverManager.getConnection(url, username, password);
+			conn = JDBCUtils.getMySQLConnection();
 
 			String sql = "{call add_pro(?,?,?)}";
 			stmt = conn.prepareCall(sql);
@@ -147,20 +103,7 @@ public class StatementsDemo {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			JDBCUtils.release(stmt, conn);
 		}
 	}
 

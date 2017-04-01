@@ -10,13 +10,14 @@ import java.sql.Statement;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
-public class JDBCStart {
+public class ConnectionDemo {
 
 	public static void main(String[] args) throws SQLException {
-		readUsers2();
+		getConnectionByURL();
+		getConnectionByDataSource();
 	}
 	
-	private static void readUsers2() throws SQLException {
+	private static void getConnectionByURL() throws SQLException {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -75,5 +76,39 @@ public class JDBCStart {
 				}
 			}
 		}		
+	}
+	
+
+	private static void getConnectionByDataSource() {
+		Connection conn = null;
+		
+		try {
+	        // Establish the connection by DataSource.  
+	        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+	        
+	        SQLServerDataSource ds = new SQLServerDataSource(); 
+	        ds.setUser("sa"); 
+	        ds.setPassword("1qaz@WSX"); 
+	        ds.setServerName("localhost"); 
+	        ds.setPortNumber(1433);  
+	        ds.setDatabaseName("library"); 
+	        conn = ds.getConnection();
+	        
+			// Do something with the connection
+			System.out.println(conn.isClosed());
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			if(conn != null) {
+				try {
+					conn.close();
+				}
+				catch(SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }

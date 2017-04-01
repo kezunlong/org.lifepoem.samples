@@ -8,12 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.lifepoem.samples.jdbc.JDBCUtils;
+
 public class ResultSetsDemo {
 
 	public static void main(String[] args) {
 		resultSetDemo();
 	}
-
 	
 	/*
 	 * ResultSet主要用于存储结果集，并且只能通过next()方法向前遍历数据
@@ -26,11 +27,7 @@ public class ResultSetsDemo {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/lms?useSSL=false";
-			String username = "root";
-			String password = "123456";
-			conn = DriverManager.getConnection(url, username, password);
+			conn = JDBCUtils.getMySQLConnection();
 
 			String sql = "SELECT * FROM users";
 			stmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -56,27 +53,7 @@ public class ResultSetsDemo {
 			e.printStackTrace();
 		}
 		finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			JDBCUtils.release(rs, stmt, conn);
 		}
 	}
 
@@ -89,11 +66,7 @@ public class ResultSetsDemo {
 		ResultSet rs = null;
 
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/lms?useSSL=false";
-			String username = "root";
-			String password = "123456";
-			conn = DriverManager.getConnection(url, username, password);
+			conn = JDBCUtils.getMySQLConnection();
 
 			// Create and execute an SQL statement, retrieving an updateable result set.
 			String SQL = "SELECT * FROM users;";
@@ -130,21 +103,7 @@ public class ResultSetsDemo {
 			e.printStackTrace();
 		}
 		finally {
-			if (rs != null)
-				try {
-					rs.close();
-				} catch (Exception e) {
-				}
-			if (stmt != null)
-				try {
-					stmt.close();
-				} catch (Exception e) {
-				}
-			if (conn != null)
-				try {
-					conn.close();
-				} catch (Exception e) {
-				}
+			JDBCUtils.release(rs, stmt, conn);
 		}
 	}
 
