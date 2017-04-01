@@ -21,6 +21,8 @@ import org.lifepoem.samples.jdbc.JDBCUtils;
 public class StatementsDemo {
 
 	public static void main(String[] args) {
+		statementDemo();
+		preparedStatementDemo();
 		callableStatementDemo();
 	}
 

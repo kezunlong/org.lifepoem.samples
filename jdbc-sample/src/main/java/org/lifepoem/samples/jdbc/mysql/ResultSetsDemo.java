@@ -14,6 +14,7 @@ public class ResultSetsDemo {
 
 	public static void main(String[] args) {
 		resultSetDemo();
+		modifyResultSet();
 	}
 	
 	/*
