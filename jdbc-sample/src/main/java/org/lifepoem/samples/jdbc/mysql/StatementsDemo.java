@@ -14,7 +14,7 @@ import org.lifepoem.samples.jdbc.JDBCUtils;
 
 /**
  * Demos for Statement, PreparedStatement, CallableStatement
- * 
+ * [此示例同时适用于MySQL, MSSQL等]
  * @author irfgoy
  *
  */

@@ -10,6 +10,11 @@ import java.sql.Statement;
 
 import org.lifepoem.samples.jdbc.JDBCUtils;
 
+/**
+ * [此示例同时适用于MySQL, MSSQL等]
+ * @author Vincent Ke
+ *
+ */
 public class ResultSetsDemo {
 
 	public static void main(String[] args) {
